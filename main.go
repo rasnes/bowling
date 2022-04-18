@@ -23,22 +23,15 @@ func Sum[T Number](s []T) T {
 }
 
 func Bowl(s rolls, score int) int {
-	//fmt.Println(score)
-	//fmt.Println(s)
+	if len(s) <= 3 {
+		return score + Sum(s)
+	}
+
 	if s[0] == 10 { // strike
-		if len(s) == 3 { // tenth frame strike
-			return score + Sum(s)
-		}
 		return Bowl(s[1:len(s)], score+Sum(s[0:3]))
-	} else if Sum(s[0:2]) == 10 { // spare
-		if len(s) == 3 { // tenth frame spare
-			return score + Sum(s)
-		}
+	} else if s[0]+s[1] == 10 { // spare
 		return Bowl(s[2:len(s)], score+Sum(s[0:3]))
-	} else {
-		if len(s) == 2 { // tenth open frame
-			return score + Sum(s)
-		}
+	} else { // open frame
 		return Bowl(s[2:len(s)], score+Sum(s[0:2]))
 	}
 }
